@@ -57,11 +57,14 @@ zip' (x:xs) (y:ys) = (x,y):zip' xs ys</pre><p>前两个模式表示两个List中
 elem' a [] = False  
 elem' a (x:xs)  
     | a == x    = True  
-    | otherwise = a `elem'` xs</pre><p>简单直接. 若头部不是该元素, 就检测尾部, 若为空List就返回False</p><a name="排序，要快！"></a><h2>排序，要快！</h2><img src="img/quickman.png" style="float:right"></img><p>假定我们有一个可排序的List,其中元素的类型为Ord类型类的成员. 现在我们要给它排序! 有个排序算法非常的酷, 就是快速排序(<i>quick sort</i>), 睿智的排序方法. 尽管它在命令式语言中也不过10行, 但在haskell下边要更短,更漂亮, 俨然已经成了haskell的招牌了. 嗯, 我们在这里也实现一下. 或许会显得很俗气, 因为每个人都用它来展示haskell究竟有多优雅!</p><p>它的类型声明应为<code>quicksort :: (Ord a) => [a] -> [a]</code>, 没啥奇怪的. 边界条件呢? 如料，空List。排过序的空List还是空List。接下来便是算法的定义：<b>排过序的List就是令所有小于等于头部的元素在先(它们已经排过了序), 后跟大于头部的元素(它们同样已经拍过了序)</b>。 注意定义中有两次排序，所以就得递归两次！同时也需要注意算法定义的动词为"是"什么而非"做"这个,"做"那个,再"做"那个...这便是函数式编程之美！如何才能从List中取得比头部小的那些元素呢？List Comprehension。好，动手写出这个函数！</p><pre class="code">quicksort :: (Ord a) => [a] -> [a]  
+    | otherwise = a `elem'` xs</pre><p>简单直接. 若头部不是该元素, 就检测尾部, 若为空List就返回False</p><a name="排序，要快！"></a><h2>排序，要快！</h2><img src="img/quickman.png" style="float:right"></img><p>假定我们有一个可排序的List,其中元素的类型为Ord类型类的成员. 现在我们要给它排序! 有个排序算法非常的酷, 就是快速排序(<i>quick sort</i>), 睿智的排序方法. 尽管它在命令式语言中也不过10行, 但在haskell下边要更短,更漂亮, 俨然已经成了haskell的招牌了. 嗯, 我们在这里也实现一下. 或许会显得很俗气, 因为每个人都用它来展示haskell究竟有多优雅!</p><p>它的类型声明应为<code>quicksort :: (Ord a) => [a] -> [a]</code>, 没啥奇怪的. 边界条件呢? 如料，空List。排过序的空List还是空List。接下来便是算法的定义：<b>排过序的List就是令所有小于等于头部的元素在先(它们已经排过了序), 后跟大于头部的元素(它们同样已经拍过了序)</b>。 注意定义中有两次排序，所以就得递归两次！同时也需要注意算法定义的动词为"是"什么而非"做"这个,"做"那个,再"做"那个...这便是函数式编程之美！如何才能从List中取得比头部小的那些元素呢？List Comprehension。好，动手写出这个函数！</p>
+    <pre class="code">quicksort :: (Ord a) => [a] -> [a]  
 quicksort [] = []  
 quicksort (x:xs) =  
-  let smallerSorted = quicksort [a | a <- xs, a <= x] biggerSorted = quicksort [a | a <- xs, a > x]  
-  in smallerSorted ++ [x] ++ biggerSorted</pre><p>小小的测试一下, 看看结果是否正确~</p><pre class="code">ghci> quicksort [10,2,5,3,1,6,7,4,2,3,4,8,9]  
+  let smallerSorted = quicksort [a | a &lt;- xs, a &lt;= x] 
+       biggerSorted = quicksort [a | a &lt;- xs, a &gt; x]  
+  in smallerSorted ++ [x] ++ biggerSorted</pre>
+  <p>小小的测试一下, 看看结果是否正确~</p><pre class="code">ghci> quicksort [10,2,5,3,1,6,7,4,2,3,4,8,9]  
 [1,2,2,3,3,4,4,5,6,7,8,9,10]  
 ghci> quicksort "the quick brown fox jumps over the lazy dog"  
 " abcdeeefghhijklmnoooopqrrsttuuvwxyz"</pre><p>booyah! 如我所说的一样! 若给<code>[5,1,9,4,6,7,3]</code>排序，这个算法就会取出它的头部，即5。 将其至于分别比它大和比它小的两个List中间，得<code>[1,4,3] ++ [5] ++ [9,6,7]</code>，我们便知道了当排序结束之时，5会在第四位，因为有3个数比它小每，也有三个数比它大。好的，接着排<code>[1,4,3]</code>与<code>[9,6,7]</code>，结果就出来了！对它们的排序也是使用同样的函数，将它们分成许多小块，最终到达临界条件，即空List经排序依然为空，有个插图：</p><p>橙色的部分表示已定位并不再移动的元素。从左到右看，便是一个排过序的List。在这里我们将所有元素与head作比较，而实际上就快速排序算法而言，选择任意元素都是可以的。被选择的元素就被称作锚（<i>pivot</i>），以方便模式匹配。小于锚的元素都在浅绿的部分，大于锚都在深绿部分，这个黄黄的坡就表示了快速排序的执行方式：</p><img src="img/quicksort.png" style="float:none"></img><a name="递归地思考"></a><h2>递归地思考</h2><p>我们已经递不少归了，也许你已经发觉了其中的固定模式：先定义一个边界条件，再定义个函数，让它从一堆元素中取一个并做点事情后，把余下的元素重新交给这个函数。 这一模式对List、Tree等数据结构都是适用的。例如，sum函数就是一个List头部与其尾部的sum的和。一个List的积便是该List的头与其尾部的积相乘的积，一个List的长度就是1与其尾部长度的和. 等等</p><img src="img/brain.png" style="float:right"></img><p>再者就是边界条件。一般而言，边界条件就是为避免程序出错而设置的保护措施，处理List时的边界条件大部分都是空List，而处理Tree时的边界条件就是没有子元素的节点。</p><p>处理数字时也与之相似。函数一般都得接受一个值并修改它。早些时候我们编写过一个计算斐波纳契的函数，它便是某数与它减一的斐波纳契数的积。让它乘以零就不行了， 斐波纳契数又都是非负数，边界条件便可以定为1，即乘法的单位元。 因为任何数乘以1的结果还是这个数。而在sum中，加法的单位元就是0。在快速排序中，边界条件和单位元都是空List，因为任一List与空List相加的结果依然是原List。</p><p>使用递归来解决问题时应当先考虑递归会在什么样的条件下不可用, 然后再找出它的边界条件和单位元, 考虑参数应该在何时切开(如对List使用模式匹配), 以及在何处执行递归.</p>
