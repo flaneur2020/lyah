@@ -88,7 +88,7 @@ ghci> span (/=4) [1,2,3,4,5,6,7]
 [1,2,2,3,4,5,6,8]  
 ghci> sort "This will be sorted soon"  
 " Tbdeehiillnooorssstw"</pre><p><strong>group</strong>取一个List作参数，并将其中相邻并相等的元素各自归类，组成一个个子List.</p><pre class="code">ghci> group [1,1,1,1,2,2,2,2,3,3,2,2,2,5,6,7]  
-[[1,1,1,1],[2,2,2,2],[3,3],[2,2,2],[5],[6],[7]]</pre><p>若在group一个List之前给它排序就可以得到每个元素在该List中的出现次数。</p><pre class="code">ghci> map (\l@(x:xs) -> (x,length l)) 。group 。sort $ [1,1,1,1,2,2,2,2,3,3,2,2,2,5,6,7]  
+[[1,1,1,1],[2,2,2,2],[3,3],[2,2,2],[5],[6],[7]]</pre><p>若在group一个List之前给它排序就可以得到每个元素在该List中的出现次数。</p><pre class="code">ghci> map (\l@(x:xs) -> (x,length l)) . group . sort $ [1,1,1,1,2,2,2,2,3,3,2,2,2,5,6,7]  
 [(1,4),(2,7),(3,2),(5,1),(6,1),(7,1)]</pre><p><strong>inits</strong>和<strong>tails</strong>与<code>init</code>和<code>tail</code>相似，只是它们会递归地调用自身直到什么都不剩，看:</p><pre class="code">ghci> inits "w00t"  
 ["","w","w0","w00","w00t"]  
 ghci> tails "w00t"  
