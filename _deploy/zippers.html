@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <style>
+            @import url(css/style.css);
+            @import url(css/feedback.css);
+        </style>
+        <script src="js/jquery.js"></script>
+        <script src="js/jquery.chili-2.2.js"></script>
+        <script src="js/script.js"></script>
+        <script src="js/html2canvas.js"></script>
+        <script src="js/jsfeedback.js"></script>
+        <script>
+             ChiliBook.recipeFolder = "js/chili/";  
+             ChiliBook.automaticSelector = "pre";
+        </script>
+        <script>
+            $(function(){
+                $('#feedback').click(function(){
+                    $('body').feedback();
+                })
+            });
+        </script>
+        <script type="text/javascript">
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-32830659-1']);
+            _gaq.push(['_trackPageview']);
+
+            (function() {
+                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
+        </script>
+        <title>Zippers資料結構</title>
+    </head>
+    <body>
+        <div id="header">
+            <img id="beta" alt="beta" src="img/beta.png" />
+        </div>
+
+        <div id="main">
+            <ul class="nav">
+                <li class="left">  <img src="img/prv.png"></img><a href="for-a-few-monads-more.html">再來看看更多Monad</a></li>
+                <li class="center"><a href="chapters.html">Index</a></li>
+                <li class="right"></li>
+            </ul>
+            <a name="Zippers資料結構"></a><h1>Zippers資料結構</h1><img src="img/60sdude.png" style="float:right"></img><p>儘管Haskell的純粹性質帶來很多好處，但他讓一些在非純粹語言很容易處理的一些事情變得要用另一種方法解決。由於referential transparency，同樣一件事在Haskell中是沒有分別的。</p><p>所以如果我們有一個裝滿5的樹，而我們希望把其中一個換成6，那我們必須要知道我們究竟是想改變哪個5。我們也必須知道我們身處在這棵樹的哪裡。但在Haskell中，每個5都長得一樣，我們並不能因為他們在記憶體中的位址不同就把他們區分開來。我們也不能改變任何狀態，當我們想要改變一棵樹的時候，我們實際上是說我們要一棵新的樹，只是他長得很像舊的。</p><p>一種解決方式是記住一條從根節點到現在這個節點的路徑。我們可以這樣表達：給定一棵樹，先往左走，再往右走，再往左走，然後改變你走到的元素。雖然這是可行的，但這非常沒有效率。如果我們想接連改變一個在附近的節點，我們必須再從根節點走一次。</p><p>在這個章節中，我們會看到我們可以集中注意在某個資料結構上，這樣讓改變資料結構跟遍歷的動作非常有效率。</p><a name="來走二元樹吧!"></a><h2>來走二元樹吧!</h2><p>我們在生物課中學過，樹有非常多種。所以我們來自己發明棵樹吧！</p><pre class="code">data Tree a = Empty | Node a (Tree a) (Tree a) deriving (Show)</pre><p>這邊我們的樹不是空的就是有兩棵子樹。來看看一個範例：</p><pre class="code">freeTree :: Tree Char  
+freeTree =   
+    Node 'P'  
+        (Node 'O'  
+             (Node 'L'  
+              (Node 'N' Empty Empty)  
+              (Node 'T' Empty Empty)  
+             )  
+             (Node 'Y'  
+              (Node 'S' Empty Empty)  
+              (Node 'A' Empty Empty)  
+             )  
+        )  
+        (Node 'L'  
+             (Node 'W'  
+                  (Node 'C' Empty Empty)  
+                  (Node 'R' Empty Empty)  
+             )  
+             (Node 'A'  
+                  (Node 'A' Empty Empty)  
+                  (Node 'C' Empty Empty)  
+             )  
+        )</pre><p>畫成圖的話就是像這樣：</p><img src="img/pollywantsa.png" style="float:right"></img><p>注意到<code>W</code>這個節點了嗎？</p><p>如果我們想要把他變成<code>P</code>。我們會怎麼做呢？</p><p>一種方式是用pattern match的方式做，直到我們找到那個節點為止。</p><p>要先往右走再往左走，再改變元素內容，像是這樣：</p><pre class="code">changeToP :: Tree Char -> Tree Char  
+changeToP (Node x l (Node y (Node _ m n) r)) = Node x l (Node y (Node 'P' m n) r)</pre><p>這不只看起來很醜，而且很不容易閱讀。</p><p>這到底是怎麼回事？</p><p>我們使用pattern match來拆開我們的樹，</p><p>我們把root綁定成<code>x</code>，把左子樹綁定成<code>l</code>。</p><p>對於右子樹我們繼續使用pattern match。</p><p>直到我們碰到一個子樹他的root是<code>'W'</code>。</p><p>到此為止我們再重建整棵樹，</p><p>新的樹只差在把<code>'W'</code>改成了<code>'P'</code>。</p><p>有沒有比較好的作法呢？</p><p>有一種作法是我們寫一個函數，他接受一個樹跟一串list，裡面包含有行走整個樹時的方向。</p><p>方向可以是<code>L</code>或是<code>R</code>，分別代表向左走或向右走。</p><p>我們只要跟隨指令就可以走達指定的位置：</p><pre class="code">data Direction = L | R deriving (Show)  
+type Directions = [Direction]  
+  
+changeToP :: Directions-> Tree Char -> Tree Char  
+changeToP (L:ds) (Node x l r) = Node x (changeToP ds l) r  
+changeToP (R:ds) (Node x l r) = Node x l (changeToP ds r)  
+changeToP [] (Node _ l r) = Node 'P' l r</pre><p>如果在list中的第一個元素是<code>L</code>，我們會建構一個左子樹變成<code>'P'</code>的新樹。</p><p>當我們遞迴地呼叫<code>changeToP</code>，</p><p>我們只會傳給他剩下的部份，因為前面的部份已經看過了。</p><p>對於<code>R</code>的case也一樣。</p><p>如果list已經消耗完了，</p><p>那表示我們已經走到我們的目的地，</p><p>所以我們就回傳一個新的樹，他的root被修改成<code>'P'</code>。</p><p>要避免印出整棵樹，</p><p>我們要寫一個函數告訴我們目的地究竟是什麼元素。</p><pre class="code">elemAt :: Directions -> Tree a -> a  
+elemAt (L:ds) (Node _ l _) = elemAt ds l  
+elemAt (R:ds) (Node _ _ r) = elemAt ds r  
+elemAt [] (Node x _ _) = x</pre><p>這函數跟<code>changeToP</code>很像，</p><p>只是他不會記下沿路上的資訊，</p><p>他只會記住目的地是什麼。</p><p>我們把<code>'W'</code>變成<code>'P'</code>，然後用他來查看。</p><pre class="code">ghci> let newTree = changeToP [R,L] freeTree  
+ghci> elemAt [R,L] newTree  
+'P'</pre><p>看起來運作正常。</p><p>在這些函數裡面，包含方向的list比較像是一種"focus"，</p><p>因為他特別指出了一棵子樹。</p><p>一個像<code>[R]</code>這樣的list是聚焦在root的右子樹。</p><p>一個空的list代表的是主樹本身。</p><p>這個技巧看起來酷炫，但卻不太有效率，特別是在我們想要重複地改變內容的時候。</p><p>假如我們有一個非常大的樹以及非常長的一串包含方向的list。</p><p>我們需要沿著方向從root一直走到樹的底部。</p><p>如果我們想要改變一個鄰近的元素，我們仍需要從root開始走到樹的底部。</p><p>這實在不太令人滿意。</p><p>在下一個章節，我們會介紹一個比較好的方法，讓我們可以有效率地改變我們的focus。</p><a name="凡走過必留下痕跡"></a><h2>凡走過必留下痕跡</h2><p>我們需要一個比包含一串方向的list更好的聚焦的方法。</p><p>如果我們能夠在從root走到指定地點的沿路上撒下些麵包屑，來紀錄我們的足跡呢？</p><p>當我們往左走，我們便記住我們選擇了左邊，當我們往右走，便記住我們選擇了右邊。</p><p>要找個東西來代表我們的麵包屑，就用一串<code>Direction</code>(他可以是<code>L</code>或者是<code>R</code>)，</p><p>只是我們叫他<code>BreadCrumb</code>而不叫<code>Direction</code>。</p><p>這是因為現在我們把這串direction反過來看了：</p><pre class="code">type Breadcrumbs = [Direction]</pre><p>這邊有一個函數，他接受一棵樹跟一些麵包屑，並在我們往左走時在list的前頭加上<code>L</code></p><pre class="code">goLeft :: (Tree a, Breadcrumbs) -> (Tree a, Breadcrumbs)
+goLeft (Node _ l _, bs) = (l, L:bs)</pre><p>我們忽略root跟右子樹，直接回傳左子樹以及麵包屑，只是在現有的麵包屑前面加上<code>L</code>。</p><p>再來看看往右走的函數：</p><pre class="code">goRight :: (Tree a, Breadcrumbs) -> (Tree a, Breadcrumbs)  
+goRight (Node _ _ r, bs) = (r, R:bs)</pre><p>幾乎是一模一樣。</p><p>我們再來做一個先往右走再往左走的函數，讓他來走我們的<code>freeTree</code></p><pre class="code">ghci> goLeft (goRight (freeTree, []))  
+(Node 'W' (Node 'C' Empty Empty) (Node 'R' Empty Empty),[L,R])</pre><p>現在我們有了一棵樹，他的root是<code>'W'</code>，而他的左子樹的root是<code>'C'</code>，</p><p>右子樹的root是<code>'R'</code>。</p><p>而由於我們先往右走再往左走，所以麵包屑是<code>[L,R]</code>。</p><p>要再表示得更清楚些，我們能用定義一個<code>-:</code></p><pre class="code">x -: f = f x</pre><p>他讓我們可以將值餵給函數這件事反過來寫，</p><p>先寫值，再來是<code>-:</code>，最後是函數。</p><p>所以我們可以寫成<code>(freeTree, []) -: goRight</code>而不是<code>goRight (freeTree, [])</code>。</p><p>我們便可以把上面的例子改寫地更清楚。</p><pre class="code">ghci> (freeTree, []) -: goRight -: goLeft  
+(Node 'W' (Node 'C' Empty Empty) (Node 'R' Empty Empty),[L,R])</pre><a name="Going back up"></a><h3>Going back up</h3><a name="I'm going straight to top, oh yeah, up where the air is fresh and clean!"></a><h3>I'm going straight to top, oh yeah, up where the air is fresh and clean!</h3><a name="來看串列"></a><h2>來看串列</h2><a name="陽春的檔案系統"></a><h2>陽春的檔案系統</h2><a name="小心每一步"></a><h2>小心每一步</h2>
+            <ul class="nav">
+                <li class="left">  <img src="img/prv.png"></img><a href="for-a-few-monads-more.html">再來看看更多Monad</a></li>
+                <li class="center"><a href="chapters.html">Index</a></li>
+                <li class="right"></li>
+            </ul>
+        </div>
+        <div id="footer">
+        </div>
+        <div id="feedback">Send feedback</div>
+    </body>
+</html>
