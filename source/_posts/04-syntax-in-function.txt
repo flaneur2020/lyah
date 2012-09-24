@@ -321,7 +321,7 @@ _where_绑定可以定义名字，也可以定义函数。保持健康的编程�
 
 {{
 calcBmis :: (RealFloat a) => [(a, a)] -> [a]  
-calcBmis xs = [bmi w h | (w, h) 
+calcBmis xs = [bmi w h | (w, h) <- xs]
     where bmi weight height = weight / height ^ 2  
 }}
 
