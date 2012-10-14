@@ -18,7 +18,6 @@ task :generate do
   cp_r "#{source_dir}/img", public_dir
   cp_r "#{source_dir}/css", public_dir
   cp_r "#{source_dir}/js", public_dir
-  cp "#{source_dir}/CNAME", "#{public_dir}/CNAME"
   cp "#{source_dir}/index.html", "#{public_dir}/index.html"
 end
 
