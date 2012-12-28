@@ -24,4 +24,4 @@ CC BY-NC-SA 3.0
 
 ## Acknowledgement
 
-Thanks MnO2, whom as the translator of the Learn You a Haskell For Great Good (Traditional Chinese version). The document generator written by myself is dirty and buggy, and even I can hardly make it runnable on Linux. Thank you for your work.
+Thanks MnO2, whom the translator of the Learn You a Haskell For Great Good (Traditional Chinese version). The document generator written by myself is dirty and buggy, and even myself can hardly make it runnable on Linux. Thank you for your work.
