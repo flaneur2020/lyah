@@ -325,7 +325,8 @@ tellCar (Car {company = c, model = m, year = y}) = "This " ++ c ++ " " ++ m ++ "
 
 {{
 ghci> let stang = Car {company="Ford", model="Mustang", year=1967}  
-ghci> tellCar stang  "This Ford Mustang was made in 1967"
+ghci> tellCar stang
+"This Ford Mustang was made in 1967"
 }}
 
 可爱的小函数！它的类型声明得很漂亮，而且工作良好。好，如果改成Car a b c又会怎样？
