@@ -10,7 +10,7 @@ haskell的标准库就是一组模块，每个模块都含有一组功能相近�
 
 在haskell中，装载模块的语法为 _import_ ，这必须得在函数的定义之前，所以一般都是将它置于代码的顶部。无疑，一段代码中可以装载很多模块，只要将import语句分行写开即可。装载Data.List试下，它里面有很多实用的List处理函数.
 
-执行``import Data.List``，这样一来``Data.List``中包含的所有函数就都进入了全局命名空间。也就是说，你可以在代码的任意位置调用这些函数.`` Data.List``模块中有个``nub``函数，它可以筛掉一个List中的所有重复元素。用点号将``length``和``nub``组合:`` length 。nub ``，即可得到一个与``(\xs -> length (nub xs))``等价的函数。
+执行``import Data.List``，这样一来``Data.List``中包含的所有函数就都进入了全局命名空间。也就是说，你可以在代码的任意位置调用这些函数。`` Data.List``模块中有个``nub``函数，它可以筛掉一个List中的所有重复元素。用点号将``length``和``nub``组合:`` length 。nub ``，即可得到一个与``(\xs -> length (nub xs))``等价的函数。
 
 {{
 import Data.List  
@@ -31,7 +31,7 @@ ghci> :m Data.List
 ghci> :m Data.List Data.Map Data.Set  
 }}
 
-而你的程序中若已经有包含的代码，就不必再用``:m``了.
+而你的程序中若已经有包含的代码，就不必再用``:m``了。
 
 如果你只用得到某模块的两个函数，大可仅包含它俩。若仅装载``Data.List``模块``nub``和``sort``，就这样:
 
@@ -39,7 +39,7 @@ ghci> :m Data.List Data.Map Data.Set
 import Data.List (nub，sort)  
 }}
 
-也可以只包含除去某函数之外的其它函数，这在避免多个模块中函数的命名冲突很有用。假设我们的代码中已经有了一个叫做``nub``的函数，而装入``Data.List``模块时就要把它里面的nub除掉.
+也可以只包含除去某函数之外的其它函数，这在避免多个模块中函数的命名冲突很有用。假设我们的代码中已经有了一个叫做``nub``的函数，而装入``Data.List``模块时就要把它里面的nub除掉。
 
 {{
 import Data.List hiding (nub) 
@@ -59,9 +59,9 @@ import qualified Data.Map as M
 
 好，再调用``Data.Map``模块的``filter``函数的话仅需``M.filter``就行了 
 
-要浏览所有的标准库模块，参考这个手册。翻阅标准库中的模块和函数是提升个人haskell水平的重要途径。你也可以各个模块的源代码，这对haskell的深入学习及掌握都是大有好处的.
+要浏览所有的标准库模块，参考这个手册。翻阅标准库中的模块和函数是提升个人haskell水平的重要途径。你也可以各个模块的源代码，这对haskell的深入学习及掌握都是大有好处的。
 
-检索函数或搜寻函数位置就用[http://www.haskell.org/hoogle/ Hoogle]，相当了不起的Haskell搜索引擎! 你可以用函数名，模块名甚至类型声明来作为检索的条件.
+检索函数或搜寻函数位置就用[http://www.haskell.org/hoogle/ Hoogle]，相当了不起的Haskell搜索引擎! 你可以用函数名，模块名甚至类型声明来作为检索的条件。
 
 
 
@@ -80,7 +80,7 @@ ghci> intersperse 0 [1,2,3,4,5,6]
 [1,0,2,0,3,0,4,0,5,0,6]  
 }}
 
-**intercalate** 取两个List作参数。它会将第一个List交叉插入第二个List中间，并返回一个List.
+**intercalate** 取两个List作参数。它会将第一个List交叉插入第二个List中间，并返回一个List。
 
 {{
 ghci> intercalate " " ["hey","there","guys"]  
@@ -98,7 +98,7 @@ ghci> transpose ["hey","there","guys"]
 ["htg","ehu","yey","rs","e"]  
 }}
 
-假如有两个多项式 _3x<sup>2</sup>_ + 5x + 9，_10x<sup>3</sup> + 9_ 和 _8x<sup>3</sup> + 5x<sup>2</sup> + x - 1_ ，将其相加，我们可以列三个List: ``[0,3,5,9]``，``[10,0,0,9]`` 和 ``[8,5,1,-1]``来表示。再用如下的方法取得结果.
+假如有两个多项式 _3x<sup>2</sup>_ + 5x + 9，_10x<sup>3</sup> + 9_ 和 _8x<sup>3</sup> + 5x<sup>2</sup> + x - 1_ ，将其相加，我们可以列三个List: ``[0,3,5,9]``，``[10,0,0,9]`` 和 ``[8,5,1,-1]``来表示。再用如下的方法取得结果。
 
 {{
 ghci> map sum $ transpose [[0,3,5,9],[10,0,0,9],[8,5,1,-1]]  
@@ -120,9 +120,9 @@ ghci> concat [[3,4,5],[2,3,4],[2,1,1]]
 [3,4,5,2,3,4,2,1,1]  
 }}
 
-它相当于移除一级嵌套。若要彻底地连接其中的元素，你得``concat``它两次才行.
+它相当于移除一级嵌套。若要彻底地连接其中的元素，你得``concat``它两次才行。
 
-**concatMap**函数与map一个List之后再concat它等价.
+**concatMap**函数与map一个List之后再concat它等价。
 
 {{
 ghci> concatMap (replicate 4) [1..3]  
@@ -138,7 +138,7 @@ ghci> and $ map (==4) [4,4,4,3,4]
 False  
 }}
 
-**or** 与``and``相似，一组布尔值List中若存在一个True它就返回True.
+**or** 与``and``相似，一组布尔值List中若存在一个True它就返回True。
 
 {{
 ghci> or $ map (==4) [2,3,4,5,6,1]  
@@ -160,7 +160,7 @@ ghci> any (`elem` ['A'..'Z']) "HEYGUYSwhatsup"
 True  
 }}
 
-**iterate**取一个函数和一个值作参数。它会用该值去调用该函数并用所得的结果再次调用该函数，产生一个无限的List.
+**iterate**取一个函数和一个值作参数。它会用该值去调用该函数并用所得的结果再次调用该函数，产生一个无限的List。 
 
 {{
 ghci> take 10 $ iterate (*2) 1  
@@ -169,7 +169,7 @@ ghci> take 3 $ iterate (++ "haha") "haha"
 ["haha","hahahaha","hahahahahaha"]  
 }}
 
-**splitAt**取一个List和数值作参数，将该List在特定的位置断开。返回一个包含两个List的二元组.
+**splitAt**取一个List和数值作参数，将该List在特定的位置断开。返回一个包含两个List的二元组。
 
 {{
 ghci> splitAt 3 "heyman"  
@@ -182,7 +182,7 @@ ghci> let (a,b) = splitAt 3 "foobar" in b ++ a
 "barfoo"  
 }}
 
-**takeWhile**这一函数十分的实用。它从一个List中取元素，一旦遇到不符合条件的某元素就停止.
+**takeWhile**这一函数十分的实用。它从一个List中取元素，一旦遇到不符合条件的某元素就停止。
 
 {{
 ghci> takeWhile (>3) [6,5,4,3,2,1,2,3,4,5,4,3,2,1]  
@@ -198,7 +198,7 @@ ghci> sum $ takeWhile (<10000) $ map (^3) [1..]
 53361  
 }}
 
-用``(^3)``处理一个无限List，而一旦出现了大于10000的元素这个List就被切断了，sum到一起也就轻而易举.
+用``(^3)``处理一个无限List，而一旦出现了大于10000的元素这个List就被切断了，sum到一起也就轻而易举。
 
 **dropWhile**与此相似，不过它是扔掉符合条件的元素。一旦限制条件返回False，它就返回List的余下部分。方便实用!
 
@@ -224,7 +224,7 @@ ghci> let (fw，rest) = span (/=' ') "This is a sentence" in "First word:" ++ fw
 "First word: This，the rest: is a sentence"  
 }}
 
-**span**是在条件首次为False时断开list，而break则是在条件首次为True时断开``List。break p``与``span (not 。p)``是等价的.
+**span**是在条件首次为False时断开list，而break则是在条件首次为True时断开``List。break p``与``span (not 。p)``是等价的。
 
 {{
 ghci> break (==4) [1,2,3,4,5,6,7]  
@@ -244,7 +244,7 @@ ghci> sort "This will be sorted soon"
 " Tbdeehiillnooorssstw"
 }}
 
-**group**取一个List作参数，并将其中相邻并相等的元素各自归类，组成一个个子List.
+**group**取一个List作参数，并将其中相邻并相等的元素各自归类，组成一个个子List。
 
 {{
 ghci> group [1,1,1,1,2,2,2,2,3,3,2,2,2,5,6,7]  
@@ -278,7 +278,7 @@ search needle haystack =
   in foldl (\acc x -> if take nlen x == needle then True else acc) False (tails haystack)  
 }}
 
-首先，对搜索的List调用tails，然后遍历每个List来检查它是不是我们想要的.
+首先，对搜索的List调用tails，然后遍历每个List来检查它是不是我们想要的。
 
 {{
 ghci> "cat" `isInfixOf` "im a cat burglar"  
@@ -289,9 +289,9 @@ ghci> "cats" `isInfixOf` "im a cat burglar"
 False  
 }}
 
-由此我们便实现了一个类似**isIndexOf**的函数，**isInfixOf**从一个List中搜索一个子List，若该List包含子List，则返回True.
+由此我们便实现了一个类似**isIndexOf**的函数，**isInfixOf**从一个List中搜索一个子List，若该List包含子List，则返回True。
 
-**isPrefixOf**与**isSuffixOf**分别检查一个List是否以某子List开头或者结尾.
+**isPrefixOf**与**isSuffixOf**分别检查一个List是否以某子List开头或者结尾。
 
 {{
 ghci> "hey" `isPrefixOf` "hey there!"  
@@ -304,7 +304,7 @@ ghci> "there!" `isSuffixOf` "oh hey there"
 False  
 }}
 
-**elem**与**notElem**检查一个List是否包含某元素.
+**elem**与**notElem**检查一个List是否包含某元素。
 
 **partition**取一个限制条件和List作参数，返回两个List，第一个List中包含所有符合条件的元素，而第二个List中包含余下的.
 
@@ -315,7 +315,7 @@ ghci> partition (>3) [1,3,5,6,3,2,1,0,3,7]
 ([5,6,7],[1,3,3,2,1,0,3]) 
 }}
 
-了解``span``和``break``的差异是很重要的.
+了解``span``和``break``的差异是很重要的。
 
 {{
 ghci> span (`elem` ['A'..'Z']) "BOBsidneyMORGANeddy"  
@@ -324,7 +324,7 @@ ghci> span (`elem` ['A'..'Z']) "BOBsidneyMORGANeddy"
 
 span和break会在遇到第一个符合或不符合条件的元素处断开，而``partition``则会遍历整个List。
 
-**find**取一个List和限制条件作参数，并返回首个符合该条件的元素，而这个元素是个Maybe值。在下章，我们将深入地探讨相关的算法和数据结构，但在这里你只需了解Maybe值是Just something或Nothing就够了。与一个List可以为空也可以包含多个元素相似，一个Maybe可以为空，也可以是单一元素。同样与List类似，一个Int型的List可以写作[Int]，Maybe有个Int型可以写作Maybe Int。先试一下find函数再说.
+**find**取一个List和限制条件作参数，并返回首个符合该条件的元素，而这个元素是个Maybe值。在下章，我们将深入地探讨相关的算法和数据结构，但在这里你只需了解Maybe值是Just something或Nothing就够了。与一个List可以为空也可以包含多个元素相似，一个Maybe可以为空，也可以是单一元素。同样与List类似，一个Int型的List可以写作[Int]，Maybe有个Int型可以写作Maybe Int。先试一下find函数再说。
 
 {{
 ghci> find (>4) [1,2,3,4,5,6]  
@@ -335,9 +335,9 @@ ghci> :t find
 find :: (a -> Bool) -> [a] -> Maybe a  
 }}
 
-注意一下``find``的类型，它的返回结果为``Maybe a··，这与``[a]``的写法有点像，只是Maybe型的值只能为空或者单一元素，而List可以为空,一个元素，也可以是多个元素.
+注意一下``find``的类型，它的返回结果为``Maybe a··，这与``[a]``的写法有点像，只是Maybe型的值只能为空或者单一元素，而List可以为空,一个元素，也可以是多个元素。
 
-想想前面那段找股票的代码，``head (dropWhile (\(val,y,m,d) -> val < 1000) stock)`` 。但head并不安全! 如果我们的股票没涨过$1000会怎样? ``dropWhile``会返回一个空List，而对空List取head就会引发一个错误。把它改成``find (\(val,y,m,d) -> val > 1000) stock`` 就安全多啦，若存在合适的结果就得到它,像``Just (1001.4,2008,9,4)``，若不存在合适的元素(即我们的股票没有涨到过$1000)，就会得到一个Nothing.
+想想前面那段找股票的代码，``head (dropWhile (\(val,y,m,d) -> val < 1000) stock)`` 。但head并不安全! 如果我们的股票没涨过$1000会怎样?  ``dropWhile``会返回一个空List，而对空List取head就会引发一个错误。把它改成``find (\(val,y,m,d) -> val > 1000) stock`` 就安全多啦，若存在合适的结果就得到它,像``Just (1001.4,2008,9,4)``，若不存在合适的元素(即我们的股票没有涨到过$1000)，就会得到一个Nothing。
 
 **elemIndex**与``elem``相似，只是它返回的不是布尔值，它只是'可能'(Maybe)返回我们找的元素的索引，若这一元素不存在，就返回``Nothing``。
 
@@ -350,14 +350,14 @@ ghci> 10 `elemIndex` [1,2,3,4,5,6]
 Nothing  
 }}
 
-**elemIndices**与``elemIndex``相似，只不过它返回的是List，就不需要Maybe了。因为不存在用空List就可以表示，这就与Nothing相似了.
+**elemIndices**与``elemIndex``相似，只不过它返回的是List，就不需要Maybe了。因为不存在用空List就可以表示，这就与Nothing相似了。
 
 {{
 ghci> ' ' `elemIndices` "Where are the spaces?"  
 [5,9,13]  
 }}
 
-**findIndex**与``find``相似，但它返回的是可能存在的首个符合该条件元素的索引。**findIndices**会返回所有符合条件的索引.
+**findIndex**与``find``相似，但它返回的是可能存在的首个符合该条件元素的索引。**findIndices**会返回所有符合条件的索引。
 
 {{
 ghci> findIndex (==4) [5,3,2,1,6,4]  
@@ -368,7 +368,7 @@ ghci> findIndices (`elem` ['A'..'Z']) "Where Are The Caps?"
 [0,6,10,14] 
 }}
 
-在前面，我们讲过了zip和zipWidth，它们只能将两个List组到一个二元组数或二参函数中，但若要组三个List该怎么办? 好说~有``zip3``,``zip4``,,,,和``zipWith3``,``zipWidth4``...直到7。这看起来像是个hack，但工作良好。连着组8个List的情况很少遇到。还有个聪明办法可以组起无限多个List，但限于我们目前的水平，就先不谈了.
+在前面，我们讲过了zip和zipWidth，它们只能将两个List组到一个二元组数或二参函数中，但若要组三个List该怎么办?  好说~有``zip3``,``zip4``,,,,和``zipWith3``,``zipWidth4``...直到7。这看起来像是个hack，但工作良好。连着组8个List的情况很少遇到。还有个聪明办法可以组起无限多个List，但限于我们目前的水平，就先不谈了。
 
 {{
 ghci> zipWith3 (\x y z -> x + y + z) [1,2,3] [4,5,2,2] [2,2,3]  
@@ -377,9 +377,9 @@ ghci> zip4 [2,3,3] [2,2,2] [5,5,3] [2,2,2]
 [(2,2,5,2),(3,2,5,2),(3,2,3,2)]  
 }}
 
-与普通的``zip``操作相似，以返回的List中长度最短的那个为准.
+与普通的``zip``操作相似，以返回的List中长度最短的那个为准。
 
-在处理来自文件或其它地方的输入时，**lines**会非常有用。它取一个字符串作参数。并返回由其中的每一行组成的List.
+在处理来自文件或其它地方的输入时，**lines**会非常有用。它取一个字符串作参数。并返回由其中的每一行组成的List。
 
 {{
 ghci> lines "first line\nsecond line\nthird line"  
@@ -388,14 +388,14 @@ ghci> lines "first line\nsecond line\nthird line"
 
 '\n'表示unix下的换行符，在haskell的字符中，反斜杠表示特殊字符.
 
-**unlines**是lines的反函数，它取一组字符串的List，并将其通过'\n'合并到一块.
+**unlines**是lines的反函数，它取一组字符串的List，并将其通过'\n'合并到一块。
 
 {{
 ghci> unlines ["first line"，"second line"，"third line"]  
 "first line\nsecond line\nthird line\n" 
 }}
 
-**words**和**unwords**可以把一个字符串分为一组单词或执行相反的操作，很有用.
+**words**和**unwords**可以把一个字符串分为一组单词或执行相反的操作，很有用。
 
 {{
 ghci> words "hey these are the words in this sentence"  
@@ -406,7 +406,7 @@ ghci> unwords ["hey","there","mate"]
 "hey there mate"  
 }}
 
-我们前面讲到了**nub**，它可以将一个List中的重复元素全部筛掉，使该List的每个元素都如雪花般独一无二，'nub'的含义就是'一小块'或'一部分'，用在这里觉得很古怪。我觉得，在函数的命名上应该用更确切的词语，而避免使用老掉牙的过时词汇.
+我们前面讲到了**nub**，它可以将一个List中的重复元素全部筛掉，使该List的每个元素都如雪花般独一无二，'nub'的含义就是'一小块'或'一部分'，用在这里觉得很古怪。我觉得，在函数的命名上应该用更确切的词语，而避免使用老掉牙的过时词汇。
 
 {{
 ghci> nub [1,2,3,4,3,2,1,2,3,4,3,2,1]  
@@ -415,7 +415,7 @@ ghci> nub "Lots of words and stuff"
 "Lots fwrdanu"  
 }}
 
-**delete**取一个元素和List作参数，会删掉该List中首次出现的这一元素.
+**delete**取一个元素和List作参数，会删掉该List中首次出现的这一元素。
 
 {{
 ghci> delete 'h' "hey there ghang!"  
@@ -426,7 +426,7 @@ ghci> delete 'h' 。delete 'h' 。delete 'h' $ "hey there ghang!"
 "ey tere gang!"  
 }}
 
-**\\**表示List的差集操作，这与集合的差集很相似，它会除掉左边List中所有存在于右边List中的元素.
+**\\**表示List的差集操作，这与集合的差集很相似，它会除掉左边List中所有存在于右边List中的元素。
 
 {{
 ghci> [1..10] \\ [2,5,9]  
@@ -444,7 +444,7 @@ ghci> [1..7] `union` [5..10]
 [1,2,3,4,5,6,7,8,9,10]  
 }}
 
-**intersection**相当于集合的交集。它返回两个List的相同部分.
+**intersection**相当于集合的交集。它返回两个List的相同部分。
 
 {{
 ghci> [1..7] `intersect` [5..10]  
@@ -558,7 +558,7 @@ ghci>
 
 Hmm，不错，有点``words``的样子了。只是还有空格在里面，恩，该怎么办? 我知道，用``filter``滤掉它们!
 
-啊哈.
+啊哈。
 
 ``Data.Char``中也含有与``Ordering``相似的类型。``Ordering``可以有两个值，``LT``，``GT``和``EQ``。这就是个枚举，它表示了两个元素作比较可能的结果.GeneralCategory类型也是个枚举，它表示了一个字符可能所在的分类。而得到一个字符所在分类的主要方法就是使用``generalCategory``函数.它的类型为: ``generalCategory :: Char -> GeneralCategory``。那31个分类就不在此一一列出了，试下这个函数先:
 
@@ -577,12 +577,12 @@ ghci> map generalCategory " \t\nA9?|"
 [Space,Control,Control,UppercaseLetter,DecimalNumber,OtherPunctuation,MathSymbol]
 }}
 
-由于``GeneralCategory``类型是Eq类型类的一部分，使用类似``generalCategory c == Space``的代码也是可以的.
+由于``GeneralCategory``类型是Eq类型类的一部分，使用类似``generalCategory c == Space``的代码也是可以的。
 
-**toUpper**将一个字符转为大写字母，若该字符不是小写字母，就按原值返回.
-**toLower**将一个字符转为小写字母，若该字符不是大写字母，就按原值返回.
-**toTitle**将一个字符转为title-case，对大多数字符而言，title-case就是大写.
-**digitToInt**将一个字符转为Int值，而这一字符必须得在``'1'..'9','a'..'f'``或``'A'..'F'``的范围之内.
+**toUpper**将一个字符转为大写字母，若该字符不是小写字母，就按原值返回。
+**toLower**将一个字符转为小写字母，若该字符不是大写字母，就按原值返回。
+**toTitle**将一个字符转为title-case，对大多数字符而言，title-case就是大写。
+**digitToInt**将一个字符转为Int值，而这一字符必须得在``'1'..'9','a'..'f'``或``'A'..'F'``的范围之内。
 
 {{
 ghci> map digitToInt "34538"  
@@ -591,7 +591,7 @@ ghci> map digitToInt "FF85AB"
 [15,15,8,5,10,11]  
 }}
 
-``intToDigit``是``digitToInt``的反函数。它取一个``0``到``15``的``Int``值作参数，并返回一个小写的字符.
+``intToDigit``是``digitToInt``的反函数。它取一个``0``到``15``的``Int``值作参数，并返回一个小写的字符。
 
 {{
 ghci> intToDigit 15  
@@ -600,7 +600,7 @@ ghci> intToDigit 5
 '5'  
 }}
 
-**ord**与**char**函数可以将字符与其对应的数字相互转换.
+**ord**与**char**函数可以将字符与其对应的数字相互转换。
 
 {{
 ghci> ord 'a'  
@@ -611,7 +611,7 @@ ghci> map ord "abcdefgh"
 [97,98,99,100,101,102,103,104] 
 }}
 
-两个字符的``ord``值之差就是它们在unicode字符表上的距离.
+两个字符的``ord``值之差就是它们在unicode字符表上的距离。
 
 _Caesar ciphar_是加密的基础算法，它将消息中的每个字符都按照特定的字母表进行替换。它的实现非常简单，我们这里就先不管字母表了.
 
@@ -726,7 +726,7 @@ fromList [(1,2),(3,2),(5,5)]
 Map.fromList :: (Ord k) => [(k，v)] -> Map.Map k v
 }}
 
-这表示它取一组键值对的List，并返回一个将k映射为v的map。注意一下，当使用普通的关联列表时，只需要键的可判断相等性就行了。而在这里，它还必须得是可排序的。这在Data.Map模块中是强制的。因为它会按照某顺序将其组织在一棵树中.在处理键值对时，只要键的类型属于Ord类型类，就应该尽量使用Data.Map.empty返回一个空map.
+这表示它取一组键值对的List，并返回一个将k映射为v的map。注意一下，当使用普通的关联列表时，只需要键的可判断相等性就行了。而在这里，它还必须得是可排序的。这在Data.Map模块中是强制的。因为它会按照某顺序将其组织在一棵树中。在处理键值对时，只要键的类型属于Ord类型类，就应该尽量使用Data.Map.empty返回一个空map。
 
 {{
 ghci> Map.empty 
@@ -753,9 +753,9 @@ fromList' :: (Ord k) => [(k,v)] -> Map.Map k v
 fromList' = foldr (\(k,v) acc -> Map.insert k v acc) Map.empty
 }}
 
-多直白的fold！ 从一个空的map开始，然后从右折叠，随着遍历不断地往map中插入新的键值对.
+多直白的fold！ 从一个空的map开始，然后从右折叠，随着遍历不断地往map中插入新的键值对。
 
-**null**检查一个map是否为空.
+**null**检查一个map是否为空。
 
 {{
 ghci> Map.null Map.empty 
@@ -773,7 +773,7 @@ ghci> Map.size $ Map.fromList [(2,4),(3,3),(4,2),(5,4),(6,4)]
 5
 }}
 
-**singleton**取一个键值对做参数,并返回一个只含有一个映射的map.
+**singleton**取一个键值对做参数,并返回一个只含有一个映射的map。
 
 {{
 ghci> Map.singleton 3 9 
@@ -835,14 +835,14 @@ ghci> Map.lookup "patsy" $ phoneBookToMap phoneBook
 ["827-9162","943-2929","493-2928"]
 }}
 
-很简洁! 它还有别的玩法，例如在遇到重复元素时，单选最大的那个值.
+很简洁! 它还有别的玩法，例如在遇到重复元素时，单选最大的那个值。
 
 {{
 ghci> Map.fromListWith max [(2,3),(2,5),(2,100),(3,29),(3,22),(3,11),(4,22),(4,15)] 
 fromList [(2,100),(3,29),(4,22)]
 }}
 
-或是将相同键的值都加在一起.
+或是将相同键的值都加在一起。
 
 {{
 ghci> Map.fromListWith (+) [(2,3),(2,5),(2,100),(3,29),(3,22),(3,11),(4,22),(4,15)] 
@@ -856,7 +856,7 @@ ghci> Map.insertWith (+) 3 100 $ Map.fromList [(3,4),(5,103),(6,339)]
 fromList [(3,104),(5,103),(6,339)]
 }}
 
-``Data.Map``里面还有不少函数，这个文档中的列表就很全了.
+``Data.Map``里面还有不少函数，这个文档中的列表就很全了。
 
 
 
@@ -983,9 +983,9 @@ fromList [3,4,5,6,7,8]
 
 == 构造自己的模块 #build-your-own-module
 
-我们已经见识过了几个很酷的模块，但怎样才能构造自己的模块呢? 几乎所有的编程语言都允许你将代码分成多个文件，haskell也不例外。在编程时，将功能相近的函数和类型至于同一模块中会是个很好的习惯。这样一来，你就可以轻松地一个import来重用其中的函数.
+我们已经见识过了几个很酷的模块，但怎样才能构造自己的模块呢?  几乎所有的编程语言都允许你将代码分成多个文件，haskell也不例外。在编程时，将功能相近的函数和类型至于同一模块中会是个很好的习惯。这样一来，你就可以轻松地一个import来重用其中的函数。
 
-接下来我们将构造一个由计算机几何图形体积和面积组成的模块，先从新建一个``Geometry.hs``的文件开始.
+接下来我们将构造一个由计算机几何图形体积和面积组成的模块，先从新建一个``Geometry.hs``的文件开始。
 
 在模块的开头定义模块的名称，如果文件名叫做``Geometry.hs``那它的名字就得是_Geometry_。在声明出它含有的函数名之后就可以编写函数的实现啦，就这样写:
 
@@ -1036,9 +1036,9 @@ rectangleArea a b = a * b
 
 [$img/making_modules.png]
 
-标准的几何公式。有几个地方需要注意一下，由于立方体只是长方体的特殊形式，所以在求它面积和体积的时候我们就将它当作是边长相等的长方体。在这里还定义了一个helper函数，``rectangleArea``它可以通过长方体的两条边计算出长方体的面积。它仅仅是简单的相乘而已，分量不大。但请注意我们可以在这一模块中调用这个函数，而它不会被导出! 因为我们这个模块只与三维图形打交道.
+标准的几何公式。有几个地方需要注意一下，由于立方体只是长方体的特殊形式，所以在求它面积和体积的时候我们就将它当作是边长相等的长方体。在这里还定义了一个helper函数，``rectangleArea``它可以通过长方体的两条边计算出长方体的面积。它仅仅是简单的相乘而已，分量不大。但请注意我们可以在这一模块中调用这个函数，而它不会被导出!  因为我们这个模块只与三维图形打交道。
 
-当构造一个模块的时 候，我们通常只会导出那些行为相近的函数，而其内部的实现则是隐蔽的。如果有人用到了Geometry模块，就不需要关心它的内部实现是如何。我们作为编写者，完全可以随意修改这些函数甚至将其删掉，没有人会注意到里面的变动，因为我们并不把它们导出.
+当构造一个模块的时 候，我们通常只会导出那些行为相近的函数，而其内部的实现则是隐蔽的。如果有人用到了Geometry模块，就不需要关心它的内部实现是如何。我们作为编写者，完全可以随意修改这些函数甚至将其删掉，没有人会注意到里面的变动，因为我们并不把它们导出。
 
 要使用我们的模块，只需:
 
@@ -1046,9 +1046,9 @@ rectangleArea a b = a * b
 import Geometry  
 }}
 
-将Geometry.hs文件至于用到它的程序文件的同一目录之下.
+将Geometry.hs文件至于用到它的程序文件的同一目录之下。
 
-模块也可以按照分层的结构来组织，每个模块都可以含有多个子模块。而子模块还可以有自己的子模块。我们可以把Geometry分成三个子模块，而一个模块对应各自的图形对象.
+模块也可以按照分层的结构来组织，每个模块都可以含有多个子模块。而子模块还可以有自己的子模块。我们可以把Geometry分成三个子模块，而一个模块对应各自的图形对象。
 
 首先，建立一个Geometry文件夹，注意首字母要大写，在里面新建三个文件
 
@@ -1105,7 +1105,7 @@ area :: Float -> Float
 area side = Cuboid.area side side side  
 }}
 
-好的! 先是Geometry.Sphere。注意，我们将它置于Geometry文件夹之中并将它的名字定为Geometry.Sphere。对Cuboid也是同样，也注意下，在三个模块中我们定义了许多名称相同的函数，因为所在模块不同，所以不会产生命名冲突。若要在Geometry.Cube使用Geometry.Cuboid中的函数，就不能直接import Geometry.Cuboid，而必须得qualified import。因为它们中间的函数名完全相同.
+好的! 先是Geometry.Sphere。注意，我们将它置于Geometry文件夹之中并将它的名字定为Geometry.Sphere。对Cuboid也是同样，也注意下，在三个模块中我们定义了许多名称相同的函数，因为所在模块不同，所以不会产生命名冲突。若要在Geometry.Cube使用Geometry.Cuboid中的函数，就不能直接import Geometry.Cuboid，而必须得qualified import。因为它们中间的函数名完全相同。
 
 {{
 import Geometry.Sphere  
@@ -1119,6 +1119,6 @@ import qualified Geometry.Cuboid as Cuboid
 import qualified Geometry.Cube as Cube  
 }}
 
-然后就可以调用``Sphere.area``，``Sphere.volume``，``Cuboid.area``了，而每个函数都只计算其对应物体的面积和体积.
+然后就可以调用``Sphere.area``，``Sphere.volume``，``Cuboid.area``了，而每个函数都只计算其对应物体的面积和体积。
 
-以后你若发现自己的代码体积庞大且函数众多，就应该试着找找目的相近的函数能否装入各自的模块，也方便日后的重用.
+以后你若发现自己的代码体积庞大且函数众多，就应该试着找找目的相近的函数能否装入各自的模块，也方便日后的重用。
