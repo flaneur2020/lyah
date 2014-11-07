@@ -224,7 +224,7 @@ ghci> let (fw，rest) = span (/=' ') "This is a sentence" in "First word:" ++ fw
 "First word: This，the rest: is a sentence"  
 }}
 
-**span**是在条件首次为False时断开list，而break则是在条件首次为True时断开``List。break p``与``span (not 。p)``是等价的。
+**span**是在条件首次为False时断开list，而break则是在条件首次为True时断开List。``break p``与``span (not . p)``是等价的。
 
 {{
 ghci> break (==4) [1,2,3,4,5,6,7]  
@@ -335,7 +335,7 @@ ghci> :t find
 find :: (a -> Bool) -> [a] -> Maybe a  
 }}
 
-注意一下``find``的类型，它的返回结果为``Maybe a··，这与``[a]``的写法有点像，只是Maybe型的值只能为空或者单一元素，而List可以为空,一个元素，也可以是多个元素。
+注意一下``find``的类型，它的返回结果为``Maybe a``，这与``[a]``的写法有点像，只是Maybe型的值只能为空或者单一元素，而List可以为空,一个元素，也可以是多个元素。
 
 想想前面那段找股票的代码，``head (dropWhile (\(val,y,m,d) -> val < 1000) stock)`` 。但head并不安全! 如果我们的股票没涨过$1000会怎样?  ``dropWhile``会返回一个空List，而对空List取head就会引发一个错误。把它改成``find (\(val,y,m,d) -> val > 1000) stock`` 就安全多啦，若存在合适的结果就得到它,像``Just (1001.4,2008,9,4)``，若不存在合适的元素(即我们的股票没有涨到过$1000)，就会得到一个Nothing。
 
