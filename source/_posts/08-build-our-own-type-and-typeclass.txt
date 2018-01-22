@@ -638,7 +638,7 @@ inPhoneBook name pnumber pbook = (name,pnumber) `elem` pbook
 type AssocList k v = [(k,v)]  
 }}
 
-好的，现在一个从关联List中按键索值的函数类型可以定义为``(Eq k) => k -> AssocList k v -> Maybe v. AssocList i``。AssocList是个取两个类型做参数生成一个具体类型的类型构造子，如``Assoc Int String``等等。
+好的，现在一个从关联List中按键索值的函数类型可以定义为``(Eq k) => k -> AssocList k v -> Maybe v``。AssocList是个取两个类型做参数生成一个具体类型的类型构造子，如``Assoc Int String``等等。
 
     *Fronzie说*：Hey！当我提到具体类型，那我就是说它是完全调用的，就像``Map Int String``。要不就是多态函数中的``[a]``或``(Ord a) => Maybe a``之类。有时我和孩子们会说“Maybe类型”，但我们的意思并不是按字面来，傻瓜都知道Maybe是类型构造子嘛。只要用一个明确的类型调用Maybe，如``Maybe String``可得一个具体类型。你知道，只有具体类型才可以储存值。
 
